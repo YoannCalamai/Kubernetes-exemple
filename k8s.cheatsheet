@@ -1,0 +1,53 @@
+---------------------------------
+-- minikube - commandes de base
+
+minikube delete; rm -rf ~/.minikube
+minikube start
+minikube dashboard
+
+--------------
+-- kubectl
+
+--autocompletion
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+
+
+kubectl cluster-info
+kubectl get nodes
+kubectl describe nodes
+
+kubectl get deployment
+kubectl get pods
+kubectl get services
+
+kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
+kubectl expose deployment hello-minikube --type=NodePort --port=8080
+minikube service hello-minikube --url
+
+
+-------------------------------
+-- install wordpress manually
+kubectl apply -f wordpress-namespace.yml
+kubectl apply -f mysql-secret.yml
+kubectl apply -f mysql-persistentvolume.yml
+kubectl apply -f mysql-deployment.yml
+kubectl apply -f mysql-service.yml
+kubectl apply -f wordpress-persistentvolume.yml
+kubectl apply -f wordpress-deployment.yml
+kubectl apply -f wordpress-service.yml
+
+
+kubectl delete svc --all
+kubectl delete pod --all
+kubectl delete pvc --all
+kubectl delete pv --all
+
+
+--
+helm
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install --namespace wordpress mywp bitnami/wordpress
+helm uninstall mywp bitnami/wordpress
+
